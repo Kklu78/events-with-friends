@@ -3,7 +3,7 @@ This site allows for the easy planning of events with friends. Tired of having a
 
 ## Screenshots
 
-:)))
+:)))))))))
 
 #### Technologies Used
 1. HTML
