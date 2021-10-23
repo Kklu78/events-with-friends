@@ -19,7 +19,7 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
-class Comments(models.Model):
+class Comment(models.Model):
     user = models.ManyToManyField(UserProfile)
     event = models.ManyToManyField(Event)
     content = models.TextField(max_length=250)

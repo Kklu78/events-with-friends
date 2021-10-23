@@ -3,4 +3,4 @@ from .models import *
 
 admin.site.register(Event)
 admin.site.register(UserProfile)
-admin.site.register(Comments)
+admin.site.register(Comment)
