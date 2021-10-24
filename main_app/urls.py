@@ -10,3 +10,4 @@ urlpatterns = [
 #class based views expect <int:pk>
 #function based views expect <int:model_id>
 #djangoauth doesnt have signup urls
+

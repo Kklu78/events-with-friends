@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 import os
 import requests
 import pprint
+
 load_dotenv()
 TM_CONSUMER_KEY = os.getenv("TM_CONSUMER_KEY")
 TM_CONSUMER_SECRET_KEY = os.getenv("TM_CONSUMER_SECRET_KEY")
