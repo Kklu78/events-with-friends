@@ -9,7 +9,7 @@ class Event(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=250)
     date = models.DateField()
-
+    # event_id = models.CharField(max_length=100)
     def __str__(self):
         return self.name
 
@@ -21,10 +21,11 @@ class UserProfile(models.Model):
         return self.user.username
 
 class Comment(models.Model):
-    user = models.ManyToManyField(UserProfile)
-    event = models.ManyToManyField(Event)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
     content = models.TextField(max_length=250)
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.all()[0].user.username}-{self.event.all()[0].name}"
+        # return f"{self.user}-{self.event.all()[0].name}"
+        return f'{self.user.user.username}-{self.event.name}'
