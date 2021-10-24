@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'events_with_friends.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '',
+        'NAME': 'eventswithfriends',
     }
 }
 
