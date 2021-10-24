@@ -36,3 +36,16 @@ print(events_list)
 def home(request):
     return render(request, 'home.html')
 
+def index(request):
+    return render(request, 'events/index.html')
+
+def details(request):
+    api = f'https://app.ticketmaster.com/discovery/v2/events.json?id=G5eYZpsTieYU_&apikey={TM_CONSUMER_KEY}'
+    r = requests.get(api)
+    event = r.json()['_embedded']['events'][0]
+    return render(request, 'events/details.html', {'event':event})
+
+
+def search(request):
+    return render(request, 'events/search.html')
+
