@@ -6,9 +6,12 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Event(models.Model):
+    name = models.CharField(max_length=100)
     event_id = models.CharField(max_length=50)
     def __str__(self):
-        return self.event_id
+        return self.name
+    def get_absolute_url(self):
+        return reverse('details', kwargs={'event_id': self.id})
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
