@@ -70,7 +70,6 @@ def search(request):
     # grab events
         req = requests.get(api_url)
         s_events = req.json()['_embedded']['events']
-        pprint.pprint(events)
     # redirect user to a page listing events in that search parameter
         return render(request, 'events/search.html', {'events': s_events, 'url': api_url, 'city':city})
     else:
