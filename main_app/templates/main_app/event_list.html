@@ -5,6 +5,12 @@
 
 <h1>Event List</h1>
 
+{{ url }}
 
+
+{% for event in events %}
+    <p>{{ event.name }}</p>
+{% endfor %}
+    
 
 {% endblock %}
