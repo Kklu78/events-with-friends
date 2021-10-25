@@ -6,7 +6,7 @@ urlpatterns = [
     path('events/', views.index, name='index'),
     path('events/details/', views.details, name='details'),
     path('search/', views.search, name='search'),
-    path('search/events', views.start_search, name='search_results')
+    # path('search/events', views.start_search, name='search_results')
 
 
 ]
