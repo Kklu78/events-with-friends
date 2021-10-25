@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
-# from .models import
+from .models import *
 #from .forms import CommentForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
@@ -12,6 +12,7 @@ import os
 import requests
 import pprint
 
+
 load_dotenv()
 TM_CONSUMER_KEY = os.getenv("TM_CONSUMER_KEY")
 TM_CONSUMER_SECRET_KEY = os.getenv("TM_CONSUMER_SECRET_KEY")
@@ -19,7 +20,7 @@ TM_CONSUMER_SECRET_KEY = os.getenv("TM_CONSUMER_SECRET_KEY")
 
 # city = 'Los Angeles'
 # # state = 'CA'
-size = 5
+
 # # startdate = '10-24-2021'
 # # genreId = 1
 # api_url = f'https://app.ticketmaster.com/discovery/v2/events.json?size={size}&city={city}&stateCode={state}&apikey={TM_CONSUMER_KEY}'
@@ -56,31 +57,22 @@ def details(request):
 
 # As a User, I want to be able to search for events in my area
 def search(request):
-    return render(request, 'events/search.html')
-
-def start_search(request):
+    events = None
+    print(request.POST)
+    print(bool(request.POST))
+    if bool(request.POST) == True:
     # Change the city variable to the variable the user posted
-    city = request.POST.get('city')
-    print(city)
-    # set state depending on city
-    if city == 'Austin':
-        state = 'TX'
-    elif city == 'Seattle':
-        state = 'WA'
-    elif city == 'Boston':
-        state = 'MA'
-    elif city == 'Chicago':
-        state = 'IL'
-    elif city == 'New York':
-        state = 'NY'
-    elif city == 'Miami':
-        state = 'FL'
-    else:
-        state = 'CA'
+        city = request.POST.get('city').split(', ')[0]
+        state = request.POST.get('city').split(', ')[1]
+        size = 7
     # have api url replace keys with correct locations
-    api_url = f'https://app.ticketmaster.com/discovery/v2/events.json?size={size}&city={city}&stateCode={state}&apikey={TM_CONSUMER_KEY}'
+        api_url = f'https://app.ticketmaster.com/discovery/v2/events.json?size={size}&city={city}&stateCode={state}&apikey={TM_CONSUMER_KEY}'
     # grab events
-    req = requests.get(api_url)
-    events = req.json()['_embedded']['events']
+        req = requests.get(api_url)
+        s_events = req.json()['_embedded']['events']
+        pprint.pprint(events)
     # redirect user to a page listing events in that search parameter
-    return render(request, 'main_app/event_list.html', {'events': events, 'url': api_url, 'city':city})
+        return render(request, 'events/search.html', {'events': s_events, 'url': api_url, 'city':city})
+    else:
+        return render(request, 'events/search.html', {'events': events})
+
