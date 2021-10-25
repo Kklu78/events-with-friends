@@ -26,14 +26,17 @@
 <h4>Upcoming Events in {{ city }}</h4>
 {% for event in events %}
 <div class="card">
+    <a href="/events/{{ event.id }}/">
     <div class="card-content">
         <span class="card-title">
-            <img src="{{ event.images.0.url }}">
+            <img src="{{ event.images.3.url }}" height='200' width='auto'>
             <br>
             {{ event.name }} | {{ event.dates.start.localDate }}
         </span>
     </div>
+    </a>
 </div>
+
 {% endfor %}
 
 {% else %}
