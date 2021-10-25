@@ -7,34 +7,13 @@
 <h4>{{ event.name }}</h4>
 <img src="https://s1.ticketm.net/dam/a/c96/5457b1ce-bffb-49ed-b9c0-b864bb2d3c96_1502511_EVENT_DETAIL_PAGE_16_9.jpg">
 <br>
+{% if event.list > 0 %}
+<button>Added To Saved Events</button>
+{% else %}
+<button>Add To Saved Events</button>
+{% endif %}
 <br>
-<div class="row">
-    <div class="col s6">
-      <div class="card">
-        <div class="card-content">
-            <h6>Date and Time Info</h6>
-            <br>
-            <p>Date: {{ event.dates.start.localDate }}</p>
-            <p>Time: {{ event.dates.start.localTime }}</p>
-            <p>Time Zone: {{ event.dates.timezone }}</p>
-            <p>Ticket Status: {{ event.dates.status }}</p>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col s6">
-      <div class="card">
-        <div class="card-content">
-            <h6>Price Range</h6>
-            <br>
-            <p>Type: {{ event.priceRanges.type }}</p>
-            <p>Currency: {{ event.priceRanges.currency }}</p>
-            <p>Min ticket price: {{ event.priceRanges.min }}</p>
-            <p>Max ticket price: {{ event.priceRanges.max }}</p>
-        </div>
-    </div>
-</div>
+<br>
 
 <div class="row">
     <div class="col s6">
@@ -53,11 +32,25 @@
     <div class="col s6">
       <div class="card">
         <div class="card-content">
+            <h6>Date and Time Info</h6>
+            <br>
+            <p>Date: {{ event.dates.start.localDate }}</p>
+            <p>Time: {{ event.dates.start.localTime }}</p>
+            <p>Time Zone: {{ event.dates.timezone }}</p>
+            <p>Ticket Status: {{ event.dates.status.code }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col s6">
+      <div class="card">
+        <div class="card-content">
             <h6>Genre and SubGenre Info</h6>
             <br>
-            <p>Name:{{ event.classifications.segment.name }}</p>
-            <p>Genre:{{ event.classifications.genre.name }}</p>
-            <p>SubGenre:{{ event.classifications.subGenre.name }}</p>
+            <p>Name: {{ event.classifications.0.segment.name }}</p>
+            <p>Genre: {{ event.classifications.0.genre.name }}</p>
+            <p>SubGenre: {{ event.classifications.0.subGenre.name }}</p>
         </div>
     </div>
 </div>
@@ -73,19 +66,15 @@
             <p> Description: {{ event.ticketing.healthcheck.description }}</p>
             <p> Learn more: {{ event.ticketing.healthcheck.learnMoreUrl }}</p>
         </div>
+       </div>
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
+<hr/>
+<label>Comments:</label>
+        <br>
+        <textarea name="content"></textarea>
+        <input type="submit" value="Add Comment" />
+           
 
 {% endblock %}
