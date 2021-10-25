@@ -83,4 +83,4 @@ def start_search(request):
     req = requests.get(api_url)
     events = req.json()['_embedded']['events']
     # redirect user to a page listing events in that search parameter
-    return render(request, 'main_app/event_list.html', {'events': events, 'url': api_url})
+    return render(request, 'main_app/event_list.html', {'events': events, 'url': api_url, 'city':city})
