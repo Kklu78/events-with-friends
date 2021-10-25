@@ -39,15 +39,25 @@ def home(request):
     return render(request, 'home.html')
 
 def index(request):
-    return render(request, 'events/index.html')
+        # As a User, I want to view the details of a specific event
+        # When viewing a specific event:
+        # I want to be able to see comments by most recent
+        # I want to be able to add the event to My Saved Events
+        # If the Event is already saved, I want to be able to remove it from my Saved Events
+        # If the Event is already saved, I want to be able to make a comment on the Event
+        # I want to be able to see the other Users have saved the Event, if any
+        # Change the city variable to the variable the user posted
+        # city = request.POST.get('city').split(', ')[0]
+        # state = request.POST.get('city').split(', ')[1]
+        city = 'Los Angeles'
+        state = 'CA'
+        size = 5
+        api_url = f'https://app.ticketmaster.com/discovery/v2/events.json?size={size}&city={city}&stateCode={state}&apikey={TM_CONSUMER_KEY}'
+        req = requests.get(api_url)
+        s_events = req.json()['_embedded']['events']
+        return render(request, 'events/index.html', {'events': s_events})
 
-# As a User, I want to view the details of a specific event
-# When viewing a specific event:
-    # I want to be able to see comments by most recent
-    # I want to be able to add the event to My Saved Events
-    # If the Event is already saved, I want to be able to remove it from my Saved Events
-    # If the Event is already saved, I want to be able to make a comment on the Event
-    # I want to be able to see the other Users have saved the Event, if any
+
 def details(request):
     api = f'https://app.ticketmaster.com/discovery/v2/events.json?id=G5eYZpsTieYU_&apikey={TM_CONSUMER_KEY}'
     r = requests.get(api)

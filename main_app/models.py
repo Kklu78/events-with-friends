@@ -4,20 +4,11 @@ from datetime import datetime, date
 from django.contrib.auth.models import User
 
 # Create your models here.
-LOCATIONS = (
-    ('A', 'Austin, TX'),
-    ('B', 'Seattle, WA'),
-    ('C', 'Boston, MA'),
-    ('D', 'Chicago, IL'),
-    ('E', 'New York, NY'),
-    ('F', 'Miami, FL'),
-)
-
 
 class Event(models.Model):
     event_id = models.CharField(max_length=50)
     def __str__(self):
-        return self.name
+        return self.event_id
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
