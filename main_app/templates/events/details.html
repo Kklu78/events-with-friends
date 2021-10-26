@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load tags %}
 {% block content %}
 
 <h1>Details</h1>
@@ -91,6 +92,45 @@
         </div>
     </div>
 </div>
+
+<div class="col s12">
+    <div class="card">
+        <div class="card-content">
+            {% with embedded=event|getkey:'_embedded' %}
+            <h5>Box Office Info</h5>
+            <p>Open Hours: {{ embedded.venues.0.boxOfficeInfo.openHoursDetail }}</p> 
+            <p>Will Call Details: {{ embedded.venues.0.boxOfficeInfo.willCallDetail }}</p>              
+            {% endwith %}
+        </div>
+    </div>
+</div>
+
+<div class="col s12">
+    <div class="card">
+        <div class="card-content">
+            {% with embedded=event|getkey:'_embedded' %}
+            <h5>Parking Details</h5>
+            <p>{{ embedded.venues.0.parkingDetail }}</p>              
+            {% endwith %}
+        </div>
+    </div>
+</div>
+
+<div class="col s12">
+    <div class="card">
+        <div class="card-content">
+            {% with embedded=event|getkey:'_embedded' %}
+            <h5>General Info</h5>
+            <p>{{ embedded.venues.0.generalInfo.generalRule }}</p>
+            <br>   
+            <h5>Rules for Children</h5>
+            <p>{{ embedded.venues.0.generalInfo.childRule }}</p>            
+            {% endwith %}
+        </div>
+    </div>
+</div>
+
+
 
 <hr />
 <br>

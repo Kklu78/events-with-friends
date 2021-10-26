@@ -3,7 +3,6 @@ This site allows for the easy planning of events with friends. Tired of having a
 
 ## Screenshots
 
-:)))))))))
 
 #### Technologies Used
 1. HTML
@@ -11,8 +10,9 @@ This site allows for the easy planning of events with friends. Tired of having a
 3. Javascript
 4. Python
 5. Django
-6. Trello
-7. Heroku
+6. API
+7. Trello
+8. Heroku
 
 #### Getting Started
 
