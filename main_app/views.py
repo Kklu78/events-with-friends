@@ -26,13 +26,15 @@ def index(request):
     profile = UserProfile.objects.filter(user=request.user)
     
     events = Event.objects.filter(id__in = profile.values_list('events'))
+    print(events)
     events_list = []
-    for event_id in events:
-        api = f'https://app.ticketmaster.com/discovery/v2/events.json?id={event_id}&apikey={TM_CONSUMER_KEY}'
-        req = requests.get(api)
-        s_events = req.json()['_embedded']['events'][0]
-        s_events['images'] = sorted(s_events['images'], key = lambda x: (int(x['ratio']), int(x['width'])), reverse=True)
-        events_list.append(s_events)
+    if events:
+        for event_id in events:
+            api = f'https://app.ticketmaster.com/discovery/v2/events.json?id={event_id}&apikey={TM_CONSUMER_KEY}'
+            req = requests.get(api)
+            s_events = req.json()['_embedded']['events'][0]
+            s_events['images'] = sorted(s_events['images'], key = lambda x: (int(x['ratio']), int(x['width'])), reverse=True)
+            events_list.append(s_events)
     return render(request, 'events/index.html', {'events': events_list})
 
 
@@ -41,6 +43,8 @@ def details(request, event_id):
     api = f'https://app.ticketmaster.com/discovery/v2/events.json?id={event_id}&apikey={TM_CONSUMER_KEY}'
     r = requests.get(api)
     event = r.json()['_embedded']['events'][0]
+    event['images'] = sorted(event['images'], key = lambda x: (int(x['ratio']), int(x['width'])), reverse=True)
+
     profile = UserProfile.objects.filter(user=request.user)
     userprofile = profile[0].id
     #if in user events
