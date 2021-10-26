@@ -43,21 +43,23 @@ def index(request):
     # As a User, I want to view my saved Events.
     # find profile
     profile = UserProfile.objects.filter(user=request.user)
-    print(profile)
-    print(profile.__dict__)
-    events = profile.events.all()#.values_list('event_id')
+    # print(dir(profile))
+    
+    events = Event.objects.filter(id__in = profile.values_list('events'))
     events_list = []
     for event_id in events:
         api = f'https://app.ticketmaster.com/discovery/v2/events.json?id={event_id}&apikey={TM_CONSUMER_KEY}'
         req = requests.get(api)
-        s_events = req.json()['_embedded']['events']
+        s_events = req.json()['_embedded']['events'][0]
         events_list.append(s_events)
+    print(events_list)    
     return render(request, 'events/index.html', {'events': events_list})
 
 
 def details(request, event_id):
     print(request.user.id)
     api = f'https://app.ticketmaster.com/discovery/v2/events.json?id={event_id}&apikey={TM_CONSUMER_KEY}'
+    print(api)
     r = requests.get(api)
     event = r.json()['_embedded']['events'][0]
     # event_id = event.id
