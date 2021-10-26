@@ -116,7 +116,7 @@ def search(request):
         # Change the city variable to the variable the user posted
         city = request.POST.get('city').split(', ')[0]
         state = request.POST.get('city').split(', ')[1]
-        size = 7
+        size = 18
     # have api url replace keys with correct locations
         api_url = f'https://app.ticketmaster.com/discovery/v2/events.json?size={size}&city={city}&stateCode={state}&apikey={TM_CONSUMER_KEY}'
     # grab events

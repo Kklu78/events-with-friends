@@ -7,7 +7,7 @@
         <form action="" method="POST">
             {% csrf_token %}
             <select id="id_city" name='city'>
-                <option value="Los Angeles, CA">Los Angeles, CA</option>
+                <option value="Los Angeles, CA" style='color:orange'>Los Angeles, CA</option>
                 <option value="San Francisco, CA">San Francisco, CA</option>
                 <option value="Seattle, WA">Seattle, WA</option>
                 <option value="Boston, MA">Boston, MA</option>
@@ -24,9 +24,11 @@
 </div>
 {% if events %}
 <h4>Upcoming Events in {{ city }}:</h4>
+<div class="search-container">
 {% for event in events %}
 <div class="row">
-    <div class="col s6">
+    <div class="row">
+    <div class="col s9">
         <div class="card">
             <a href="/events/{{ event.id }}/">
             <div class="card-image">
@@ -39,10 +41,10 @@
             </a>
         </div>
     </div>
+    </div>
 </div>
-
 {% endfor %}
-
+</div>
 {% else %}
 <p>hi</p>
 {% endif %}

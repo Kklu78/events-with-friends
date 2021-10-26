@@ -2,7 +2,7 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    background-color: #DDDDDD;
+    background-color: #ededed;
   }
   
   main {
@@ -12,30 +12,32 @@ body {
   footer.page-footer {
     padding-top: 0;
     text-align: right;
-    background-color: #40575E;
+    background-color: #61C0BF;
   }
   nav {
-      background-color: #40575E;
+      background-color: #61C0BF;
   }
   h1 {
       font-family: 'Rock Salt', cursive;
   }
-h3, h4, h5, h6 {
-    font-family: 'Nothing You Could Do', cursive;
-}
+  h3, h4, h5, h6 {
+      font-family: 'Nothing You Could Do', cursive;
+  }
+ 
   .btn {
-      background-color: #9c3d54;
+      background-color: #444444;
   }
 
   .btn:hover {
-      background-color: #719fb0;
+      background-color: #da0037;
   }
- 
-  .card {
-      opacity: 0.7;
-      transition: .4s ease-in-out;
-  }
+
   .card:hover {
-      opacity: 1;
+      opacity: 0.7;
+      transition: .3s ease-in-out;
   }
- 
+ .search-container {
+     display: grid;
+     justify-content: center;
+     grid-template-columns: 50% 50%;
+ }
