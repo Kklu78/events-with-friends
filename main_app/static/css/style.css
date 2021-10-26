@@ -20,9 +20,9 @@ body {
   h1 {
       font-family: 'Rock Salt', cursive;
   }
-  h4 {
-      font-family: 'Nothing You Could Do', cursive;
-  }
+h3, h4, h5, h6 {
+    font-family: 'Nothing You Could Do', cursive;
+}
   .btn {
       background-color: #9c3d54;
   }
