@@ -11,8 +11,8 @@
     </div>
 
 <br>
-{% if event.id in user_events %}
-<form action='' method='POST'>
+{% if in_user_events %}
+<form action="{% url 'remove_event' event.id %}" method='POST'>
     {% csrf_token %}
     <button class="btn">Remove From Saved Events</button>
 </form>
@@ -77,8 +77,22 @@
 <hr />
 <label>Comments:</label>
 <br>
-<textarea name="content"></textarea>
-<input type="submit" value="Add Comment" />
+<div class="col s12">
+    <form action="{% url 'add_comment' event.id %}" method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <input type="submit" class="btn" value="Add Comment">
+      </form>
+</div>
+<div class="col s12">
+    
+    {% for comment in comments %}
+    <p>{{comment.user}} commented on {{comment.created_date}}</p>        
+    <p>{{comment.content}} </p>        
+    {% endfor %}
+        
+
+</div>
 
 
 {% endblock %}
