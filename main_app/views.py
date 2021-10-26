@@ -46,22 +46,30 @@ def details(request, event_id):
     user_events = Event.objects.filter(id__in = profile.values_list('events'))
     in_user_events = event_id in [x.event_id for x in user_events]
 
-    #generate attendees
-    event_obj = Event.objects.get(event_id=event_id)
-    attendees = event_obj.userprofile_set.all()
-
-    #generate comments
-    comments = event_obj.comment_set.all()
-
     comment_form = CommentForm()
+
+    #generate attendees and comments if 
+    event_obj = Event.objects.filter(event_id=event_id)
+    if bool(event_obj):
+        attendees = event_obj[0].userprofile_set.all()
+        comments = event_obj[0].comment_set.all()[::-1]
+
+        
+        return render(request, 'events/details.html', {
+            'event': event, 
+            'in_user_events': in_user_events,
+            'attendees': attendees,
+            'comment_form': comment_form,
+            'comments': comments
+            })
     
-    return render(request, 'events/details.html', {
+    else:
+        return render(request, 'events/details.html', {
         'event': event, 
         'in_user_events': in_user_events,
-        'attendees': attendees,
         'comment_form': comment_form,
-        'comments': comments
         })
+
 
 # When viewing a specific event:
 # I want to be able to add the event to My Saved Events
