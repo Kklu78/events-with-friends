@@ -24,7 +24,9 @@ class Comment(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     content = models.TextField()
-    created_date = models.DateTimeField()
+    created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
+        # return f"{self.user}-{self.event.all()[0].name}"
         return f'{self.user.user.username}-{self.event.name}'
+    
