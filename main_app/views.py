@@ -156,7 +156,6 @@ def add_comment(request, event_id):
     return redirect('details', event_id=event_id)
 
 def delete_comment(request, event_id, comment_id):
+    Comment.objects.filter(id=comment_id)[0].delete()
+    return redirect('details', event_id=event_id)
 
-    print(Comment.objects.filter(id=comment_id)[0], 'delete comment')
-
-    return redirect('home')

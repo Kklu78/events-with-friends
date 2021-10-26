@@ -5,9 +5,12 @@
 
 
 <h4>{{ event.name }}</h4>
+<p hidden >{event.images|dictsort:'width'}</p> 
+
 <div class="row">
     <div class="col s12">
-        <img class="responsive-img" src="{{ event.images.3.url }}">
+        
+        <img class="responsive-img" src="{{event.images.0.url}}" width='100%'>
     </div>
     <div class="center-align">
         {% if in_user_events %}
@@ -22,18 +25,27 @@
         </form>
         {% endif %}
     </div>
-    <div class="col s6">
+    
+    {% if event.info %}
+    <div class="col s12">
         <div class="card">
             <div class="card-content">
+                {% if event.info %}
                 <h4>Event Info</h4>
                 <p>{{ event.info }}</p>
+                {% endif %}
                 <br>
+                {% if event.pleaseNote %}
                 <h6>Please Note</h6>
                 <p>{{ event.pleaseNote }}</p>
+                {% endif %}
+
             </div>
         </div>
-    </div>
-    <div class="col s6">
+    </div>        
+    {% endif %}
+        
+    <div class="col s12">
         <div class="card">
             <div class="card-content">
                 <h5>Date and Time Info</h5>
@@ -46,7 +58,7 @@
         </div>
     </div>
 
-    <div class="col s6">
+    <div class="col s12">
         <div class="card">
             <div class="card-content">
                 <h6>Genre and SubGenre Info</h6>
@@ -59,7 +71,7 @@
     </div>
 
 
-    <div class="col s6">
+    <div class="col s12">
         <div class="card">
             <div class="card-content">
                 <h6>Ticket Limit and Health Check Info</h6>
@@ -91,9 +103,9 @@
 
 {% if comment.user.id == userprofile %}
     <div class="col s2">
-        <form action="{% url 'delete_comment' event.id comment.id %}" method="POST">
+        <form action="{% url 'delete_comment' comment.id event.id  %}" method="post">
             {% csrf_token %}
-        <input type="button" class="btn" value="delete">
+        <input type="submit" class="btn" value="delete">
         </form>
     </div>
 {% endif %}
