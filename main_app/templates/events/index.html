@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load tags %}
+
 {% block content %}
 
 <h1>Welcome to Events with Friends</h1>
@@ -13,14 +15,18 @@
             <h5>{{ event.name }}</h5>
             <h6 style='color:orange'>{{ event.dates.start.localDate }}</h6>
             <p>Local Time: {{ event.dates.start.localTime }}</p>
-            <p> Description: {{ event.ticketing.healthcheck.info }}</p>
+            <p>Timezone: {{event.dates.timezone}}</p>            
+            {% with embedded=event|getkey:'_embedded' %}
+            <p>Location: {{embedded.venues.0.name}}</p>                
+            {% endwith %}
+            <p> Brought to you by: {{ event.promoter.name }}</p>
+
+                
         </div>
         <div class="col s6">
             <img src="{{ event.images.0.url }}" height='200' width='auto' align='right'>
         </div>
-        
-
-    </div>
+        </div>
     </a>
 </div>
 
