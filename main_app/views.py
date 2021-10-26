@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic.edit import UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from .models import *
-#from .forms import CommentForm
+from .forms import CommentForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required  # functionbased
@@ -17,33 +17,13 @@ load_dotenv()
 TM_CONSUMER_KEY = os.getenv("TM_CONSUMER_KEY")
 TM_CONSUMER_SECRET_KEY = os.getenv("TM_CONSUMER_SECRET_KEY")
 
-
-# city = 'Los Angeles'
-# # state = 'CA'
-
-# # startdate = '10-24-2021'
-# # genreId = 1
-# api_url = f'https://app.ticketmaster.com/discovery/v2/events.json?size={size}&city={city}&stateCode={state}&apikey={TM_CONSUMER_KEY}'
-# print(api_url)
-# r = requests.get(api_url)
-# pprint.pprint(r.json()['_embedded']['events'])
-# events_list = [x['name'] for x in r.json()['_embedded']['events']]
-# print(events_list)
-
-# just in case/for aws thing if needed
-# import uuid #random numbers for urls
-# import boto3 to talk to aws
-
-# Create your views here.
 def home(request):
     return render(request, 'home.html')
 
 
 def index(request):
-    # As a User, I want to view my saved Events.
-    # find profile
+
     profile = UserProfile.objects.filter(user=request.user)
-    # print(dir(profile))
     
     events = Event.objects.filter(id__in = profile.values_list('events'))
     events_list = []
@@ -56,12 +36,32 @@ def index(request):
 
 
 def details(request, event_id):
+    #query api
     api = f'https://app.ticketmaster.com/discovery/v2/events.json?id={event_id}&apikey={TM_CONSUMER_KEY}'
     r = requests.get(api)
     event = r.json()['_embedded']['events'][0]
     profile = UserProfile.objects.filter(user=request.user)
+
+    #if in user events
     user_events = Event.objects.filter(id__in = profile.values_list('events'))
-    return render(request, 'events/details.html', {'event': event, 'user_events': user_events})
+    in_user_events = event_id in [x.event_id for x in user_events]
+
+    #generate attendees
+    event_obj = Event.objects.get(event_id=event_id)
+    attendees = event_obj.userprofile_set.all()
+
+    #generate comments
+    comments = event_obj.comment_set.all()
+
+    comment_form = CommentForm()
+    
+    return render(request, 'events/details.html', {
+        'event': event, 
+        'in_user_events': in_user_events,
+        'attendees': attendees,
+        'comment_form': comment_form,
+        'comments': comments
+        })
 
 # When viewing a specific event:
 # I want to be able to add the event to My Saved Events
@@ -71,26 +71,32 @@ def add_event(request, event_id):
     # Create event into our database
     # Find the event
     # Try to save the event to a specific user's collection
-    api = f'https://app.ticketmaster.com/discovery/v2/events.json?id={event_id}&apikey={TM_CONSUMER_KEY}'
-    r = requests.get(api)
-    event = r.json()['_embedded']['events'][0]
-    name = event['name']
-    created_event = Event.objects.create(name=name, event_id=event_id)
-    # get the user's profile
-    user_profile = UserProfile.objects.get(id=request.user.id)
-    # append the event to the userprofile's events
-    user_profile.events.add(created_event.id)
-    
+    event = Event.objects.filter(event_id=event_id)   
+    if bool(event):
+        user_profile = UserProfile.objects.get(user=request.user)
+        user_profile.events.add(event[0].id)
+    else:
+        api = f'https://app.ticketmaster.com/discovery/v2/events.json?id={event_id}&apikey={TM_CONSUMER_KEY}'
+        r = requests.get(api)
+        new_event = r.json()['_embedded']['events'][0]
+        created_event = Event.objects.create(name=new_event['name'], event_id=event_id)
+        # get the user's profile
+        user_profile = UserProfile.objects.get(user=request.user)
+        # append the event to the userprofile's events
+        user_profile.events.add(created_event.id)    
     return redirect('details', event_id=event_id)
 
+def remove_event(request, event_id):
+    event = Event.objects.filter(event_id=event_id)[0]
+    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile.events.remove(event)
+    return redirect('details', event_id=event_id)
 
+    
 # As a User, I want to be able to search for events in my area
 
 
 def search(request):
-    events = None
-    print(request.POST)
-    print(bool(request.POST))
     if bool(request.POST) == True:
         # Change the city variable to the variable the user posted
         city = request.POST.get('city').split(', ')[0]
@@ -104,7 +110,7 @@ def search(request):
     # redirect user to a page listing events in that search parameter
         return render(request, 'events/search.html', {'events': s_events, 'url': api_url, 'city': city})
     else:
-        return render(request, 'events/search.html', {'events': events})
+        return render(request, 'events/search.html', {'events': None})
 
 
 def signup(request):
@@ -128,3 +134,13 @@ def signup(request):
         'form': form,
       'error_message': error_message
     })
+
+def add_comment(request, event_id):
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        new_comment = form.save(commit=False)
+        new_comment.event_id = Event.objects.filter(event_id=event_id)[0].id
+        new_comment.user_id = UserProfile.objects.get(user=request.user).id
+        new_comment.created_date = datetime.now()
+        new_comment.save()
+    return redirect('details', event_id=event_id)
