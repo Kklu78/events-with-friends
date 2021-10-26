@@ -41,7 +41,7 @@ def details(request, event_id):
     r = requests.get(api)
     event = r.json()['_embedded']['events'][0]
     profile = UserProfile.objects.filter(user=request.user)
-
+    userprofile = profile[0].id
     #if in user events
     user_events = Event.objects.filter(id__in = profile.values_list('events'))
     in_user_events = event_id in [x.event_id for x in user_events]
@@ -60,7 +60,8 @@ def details(request, event_id):
             'in_user_events': in_user_events,
             'attendees': attendees,
             'comment_form': comment_form,
-            'comments': comments
+            'comments': comments,
+            'userprofile':userprofile,
             })
     
     else:
@@ -68,6 +69,7 @@ def details(request, event_id):
         'event': event, 
         'in_user_events': in_user_events,
         'comment_form': comment_form,
+        'userprofile': userprofile,
         })
 
 
@@ -152,3 +154,9 @@ def add_comment(request, event_id):
         new_comment.created_date = datetime.now()
         new_comment.save()
     return redirect('details', event_id=event_id)
+
+def delete_comment(request, event_id, comment_id):
+
+    print(Comment.objects.filter(id=comment_id)[0], 'delete comment')
+
+    return redirect('home')

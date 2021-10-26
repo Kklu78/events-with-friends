@@ -9,25 +9,23 @@
     <div class="col s12">
         <img class="responsive-img" src="{{ event.images.3.url }}">
     </div>
-
-<br>
-{% if in_user_events %}
-<form action="{% url 'remove_event' event.id %}" method='POST'>
-    {% csrf_token %}
-    <button class="btn">Remove From Saved Events</button>
-</form>
-{% else %}
-<form action="{% url 'add_event' event.id %}" method='POST'>
-    {% csrf_token %}
-    <button class="btn">Add To Saved Events</button>
-</form>
-{% endif %}
-<br>
-<br>
+    <div class="center-align">
+        {% if in_user_events %}
+        <form action="{% url 'remove_event' event.id %}" method='POST'>
+            {% csrf_token %}
+            <button class="btn">Remove From Saved Events</button>
+        </form>
+        {% else %}
+        <form action="{% url 'add_event' event.id %}" method='POST'>
+            {% csrf_token %}
+            <button class="btn">Add To Saved Events</button>
+        </form>
+        {% endif %}
+    </div>
     <div class="col s6">
         <div class="card">
             <div class="card-content">
-                <h6>Event Info</h6>
+                <h4>Event Info</h4>
                 <p>{{ event.info }}</p>
                 <br>
                 <h6>Please Note</h6>
@@ -38,7 +36,7 @@
     <div class="col s6">
         <div class="card">
             <div class="card-content">
-                <h6>Date and Time Info</h6>
+                <h5>Date and Time Info</h5>
                 <br>
                 <p>Date: {{ event.dates.start.localDate }}</p>
                 <p>Time: {{ event.dates.start.localTime }}</p>
@@ -84,15 +82,22 @@
         <input type="submit" class="btn" value="Add Comment">
       </form>
 </div>
-<div class="col s12">
-    
-    {% for comment in comments %}
+<div class="row">
+{% for comment in comments %}
+<div class="col s10">
     <p>{{comment.user}} commented on {{comment.created_date}}</p>        
     <p>{{comment.content}} </p>        
-    {% endfor %}
-        
-
 </div>
 
-
+{% if comment.user.id == userprofile %}
+    <div class="col s2">
+        <form action="{% url 'delete_comment' event.id comment.id %}" method="POST">
+            {% csrf_token %}
+        <input type="button" class="btn" value="delete">
+        </form>
+    </div>
+{% endif %}
+    
+{% endfor %}
+</div>
 {% endblock %}
