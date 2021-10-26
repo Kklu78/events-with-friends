@@ -7,7 +7,10 @@ urlpatterns = [
     path('events/search/', views.search, name='search'),
     path('events/<slug:event_id>/', views.details, name='details'),
     path('events/<slug:event_id>/add_event/', views.add_event, name='add_event'),
+    path('events/<slug:event_id>/remove_event/', views.remove_event, name='remove_event'),
     path('accounts/signup/', views.signup, name='signup'),
+    path('events/<slug:event_id>/add_comment/', views.add_comment, name='add_comment'),
+
 
 
 ]
