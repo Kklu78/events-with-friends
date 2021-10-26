@@ -48,12 +48,12 @@
         <div class="card">
             <div class="card-content">
                 {% if event.info %}
-                <h4>Event Info</h4>
+                <h3>Event Info</h3>
                 <p>{{ event.info }}</p>
                 {% endif %}
                 <br>
                 {% if event.pleaseNote %}
-                <h6>Please Note</h6>
+                <h5>Please Note</h5>
                 <p>{{ event.pleaseNote }}</p>
                 {% endif %}
 
@@ -64,7 +64,7 @@
     <div class="col s12">
         <div class="card">
             <div class="card-content">
-                <h6>Genre and SubGenre Info</h6>
+                <h5>Genre and SubGenre Info</h5>
                 <br>
                 <p>Name: {{ event.classifications.0.segment.name }}</p>
                 <p>Genre: {{ event.classifications.0.genre.name }}</p>
@@ -77,11 +77,16 @@
     <div class="col s12">
         <div class="card">
             <div class="card-content">
-                <h6>Ticket Limit and Health Check Info</h6>
-                <br>
+                {% if event.accessibility.ticketLimit %}
+                <h5>Ticket Limit</h5>
                 <p> ticket limit: {{ event.accessibility.ticketLimit }}</p>
+                {% endif %}
+                {% if event.ticketing.healthCheck.summary or event.ticketing.healthCheck.description %}
+                <h5>Summary and Description of Event</h5>
                 <p> Summary: {{ event.ticketing.healthCheck.summary }}</p>
                 <p> Description: {{ event.ticketing.healthCheck.description }}</p>
+                {% endif %}
+
             </div>
         </div>
     </div>
