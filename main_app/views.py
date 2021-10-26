@@ -52,18 +52,16 @@ def index(request):
         req = requests.get(api)
         s_events = req.json()['_embedded']['events'][0]
         events_list.append(s_events)
-    print(events_list)    
     return render(request, 'events/index.html', {'events': events_list})
 
 
 def details(request, event_id):
-    print(request.user.id)
     api = f'https://app.ticketmaster.com/discovery/v2/events.json?id={event_id}&apikey={TM_CONSUMER_KEY}'
-    print(api)
     r = requests.get(api)
     event = r.json()['_embedded']['events'][0]
-    # event_id = event.id
-    return render(request, 'events/details.html', {'event': event})
+    profile = UserProfile.objects.filter(user=request.user)
+    user_events = Event.objects.filter(id__in = profile.values_list('events'))
+    return render(request, 'events/details.html', {'event': event, 'user_events': user_events})
 
 # When viewing a specific event:
 # I want to be able to add the event to My Saved Events
@@ -76,12 +74,15 @@ def add_event(request, event_id):
     api = f'https://app.ticketmaster.com/discovery/v2/events.json?id={event_id}&apikey={TM_CONSUMER_KEY}'
     r = requests.get(api)
     event = r.json()['_embedded']['events'][0]
-    name = event.name
-    Event.objects.create(name=name, event_id=event_id)
+    name = event['name']
+    created_event = Event.objects.create(name=name, event_id=event_id)
     # get the user's profile
     user_profile = UserProfile.objects.get(id=request.user.id)
     # append the event to the userprofile's events
-    user_profile.events.add(event_id)
+    user_profile.events.add(created_event.id)
+    
+    return redirect('details', event_id=event_id)
+
 
 # As a User, I want to be able to search for events in my area
 
