@@ -31,6 +31,7 @@ def index(request):
         api = f'https://app.ticketmaster.com/discovery/v2/events.json?id={event_id}&apikey={TM_CONSUMER_KEY}'
         req = requests.get(api)
         s_events = req.json()['_embedded']['events'][0]
+        s_events['images'] = sorted(s_events['images'], key = lambda x: (int(x['ratio']), int(x['width'])), reverse=True)
         events_list.append(s_events)
     return render(request, 'events/index.html', {'events': events_list})
 
@@ -117,8 +118,12 @@ def search(request):
     # grab events
         req = requests.get(api_url)
         s_events = req.json()['_embedded']['events']
+        res_events = []
+        for y in s_events:
+            y['images'] = sorted(y['images'], key = lambda x: (int(x['ratio']), int(x['width'])), reverse=True)
+            res_events.append(y)
     # redirect user to a page listing events in that search parameter
-        return render(request, 'events/search.html', {'events': s_events, 'url': api_url, 'city': city})
+        return render(request, 'events/search.html', {'events': res_events, 'url': api_url, 'city': city})
     else:
         return render(request, 'events/search.html', {'events': None})
 
