@@ -116,18 +116,25 @@ def search(request):
         # Change the city variable to the variable the user posted
         city = request.POST.get('city').split(', ')[0]
         state = request.POST.get('city').split(', ')[1]
+        eventtype = 'Film'
+        segmentId = 'KZFzniwnSyZfZ7v7nn'
         size = 18
     # have api url replace keys with correct locations
-        api_url = f'https://app.ticketmaster.com/discovery/v2/events.json?size={size}&city={city}&stateCode={state}&apikey={TM_CONSUMER_KEY}'
+        api_url = f'https://app.ticketmaster.com/discovery/v2/events.json?size={size}&city={city}&stateCode={state}&segmentId={segmentId}&apikey={TM_CONSUMER_KEY}'
+        print(api_url)
     # grab events
         req = requests.get(api_url)
-        s_events = req.json()['_embedded']['events']
-        res_events = []
-        for y in s_events:
-            y['images'] = sorted(y['images'], key = lambda x: (int(x['ratio']), int(x['width'])), reverse=True)
-            res_events.append(y)
-    # redirect user to a page listing events in that search parameter
-        return render(request, 'events/search.html', {'events': res_events, 'url': api_url, 'city': city})
+        if req.json().get('_embedded', None):
+            s_events = req.json()['_embedded']['events']
+            res_events = []
+            for y in s_events:
+                y['images'] = sorted(y['images'], key = lambda x: (int(x['ratio']), int(x['width'])), reverse=True)
+                res_events.append(y)
+        # redirect user to a page listing events in that search parameter
+            return render(request, 'events/search.html', {'events': res_events, 'url': api_url, 'city': city})
+        else:
+            return render(request, 'events/search.html', {'events': None, 'url': api_url, 'city': f'Search for {eventtype} in {city} returned no results.'})
+
     else:
         return render(request, 'events/search.html', {'events': None})
 
