@@ -7,7 +7,7 @@
         <form action="" method="POST">
             {% csrf_token %}
             <select id="id_city" name='city'>
-                <option value="Los Angeles, CA" style='color:orange'>Los Angeles, CA</option>
+                <option value="Los Angeles, CA">Los Angeles, CA</option>
                 <option value="San Francisco, CA">San Francisco, CA</option>
                 <option value="Seattle, WA">Seattle, WA</option>
                 <option value="Boston, MA">Boston, MA</option>
@@ -31,7 +31,7 @@
     <div class="col s9">
         <div class="card">
             <a href="/events/{{ event.id }}/">
-            <div class="card-image">
+            <div class="card-image" id="search-results">
                 <p hidden>{{event.images|dictsort:'width'}}</p>                    
                 <img src="{{ event.images.0.url }}" height='auto' width='auto'>
                 <span class="card-title">
@@ -46,7 +46,7 @@
 {% endfor %}
 </div>
 {% else %}
-<p>hi</p>
+<h4 class="center-align">Please select a city above</h4>
 {% endif %}
 
 <!--JS to init dropdown for search-->

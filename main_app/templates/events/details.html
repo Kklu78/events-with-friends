@@ -18,20 +18,20 @@
                 <p>Time: {{ event.dates.start.localTime }}</p>
                 <p>Time Zone: {{ event.dates.timezone }}</p>
                 <p>Ticket Status: {{ event.dates.status.code }}</p>
-            </div>
-        </div>
-        <div class="card-action">
+            </div>       
+            <div class="card-action">
             {% if in_user_events %}
             <form action="{% url 'remove_event' event.id %}" method='POST'>
                 {% csrf_token %}
-                <button width='100%' class="btn">Remove From Saved Events</button>
+                <button width='100%' class="btn center-align">Remove From Saved Events</button>
             </form>
             {% else %}
             <form action="{% url 'add_event' event.id %}" method='POST'>
                 {% csrf_token %}
-                <button width='100%' class="btn">Add To Saved Events</button>
+                <button width='100%' class="btn center-align">Add To Saved Events</button>
             </form>
             {% endif %}
+        </div>
         </div>
     </div>
 
@@ -46,6 +46,7 @@
 
     {% if event.info %}
     <div class="col s12">
+        
         <div class="card">
             <div class="card-content">
                 {% if event.info %}
@@ -65,6 +66,18 @@
     <div class="col s12">
         <div class="card">
             <div class="card-content">
+                <h5>Who's Going</h5>
+                <ul>
+                {% for a in attendees %}
+                        <li><p>{{ a.user }}</p></li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>    
+    <div class="col s12">
+        <div class="card">
+            <div class="card-content">
                 <h5>Genre and SubGenre Info</h5>
                 <br>
                 <p>Name: {{ event.classifications.0.segment.name }}</p>
@@ -74,13 +87,14 @@
         </div>
     </div>
 
-
+    {% if event.accessibility.ticketLimit %}
     <div class="col s12">
+        
         <div class="card">
             <div class="card-content">
-                {% if event.accessibility.ticketLimit %}
+                
                 <h5>Ticket Limit</h5>
-                <p> ticket limit: {{ event.accessibility.ticketLimit }}</p>
+                <p>Ticket Limit: {{ event.accessibility.ticketLimit }}</p>
                 {% endif %}
                 {% if event.ticketing.healthCheck.summary or event.ticketing.healthCheck.description %}
                 <h5>Summary and Description of Event</h5>
@@ -91,41 +105,42 @@
             </div>
         </div>
     </div>
-</div>
 
-<div class="col s12">
-    <div class="card">
-        <div class="card-content">
-            {% with embedded=event|getkey:'_embedded' %}
-            <h5>Box Office Info</h5>
-            <p>Open Hours: {{ embedded.venues.0.boxOfficeInfo.openHoursDetail }}</p> 
-            <p>Will Call Details: {{ embedded.venues.0.boxOfficeInfo.willCallDetail }}</p>              
-            {% endwith %}
+
+    <div class="col s12">
+        <div class="card">
+            <div class="card-content">
+                {% with embedded=event|getkey:'_embedded' %}
+                <h5>Box Office Info</h5>
+                <p>Open Hours: {{ embedded.venues.0.boxOfficeInfo.openHoursDetail }}</p> 
+                <p>Will Call Details: {{ embedded.venues.0.boxOfficeInfo.willCallDetail }}</p>              
+                {% endwith %}
+            </div>
         </div>
     </div>
-</div>
 
-<div class="col s12">
-    <div class="card">
-        <div class="card-content">
-            {% with embedded=event|getkey:'_embedded' %}
-            <h5>Parking Details</h5>
-            <p>{{ embedded.venues.0.parkingDetail }}</p>              
-            {% endwith %}
+    <div class="col s12">
+        <div class="card">
+            <div class="card-content">
+                {% with embedded=event|getkey:'_embedded' %}
+                <h5>Parking Details</h5>
+                <p>{{ embedded.venues.0.parkingDetail }}</p>              
+                {% endwith %}
+            </div>
         </div>
     </div>
-</div>
 
-<div class="col s12">
-    <div class="card">
-        <div class="card-content">
-            {% with embedded=event|getkey:'_embedded' %}
-            <h5>General Info</h5>
-            <p>{{ embedded.venues.0.generalInfo.generalRule }}</p>
-            <br>   
-            <h5>Rules for Children</h5>
-            <p>{{ embedded.venues.0.generalInfo.childRule }}</p>            
-            {% endwith %}
+    <div class="col s12">
+        <div class="card">
+            <div class="card-content">
+                {% with embedded=event|getkey:'_embedded' %}
+                <h5>General Info</h5>
+                <p>{{ embedded.venues.0.generalInfo.generalRule }}</p>
+                <br>   
+                <h5>Rules for Children</h5>
+                <p>{{ embedded.venues.0.generalInfo.childRule }}</p>            
+                {% endwith %}
+            </div>
         </div>
     </div>
 </div>
