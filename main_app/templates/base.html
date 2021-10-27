@@ -16,15 +16,17 @@
     <header class="navbar-fixed">
         <nav>
             <div class="nav-wrapper">
+                <ul class="left">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                </ul>
                 <ul>
-                    <li><a href="/" class="left brand-logo">&nbsp;&nbsp;EWF</a></li>
+                    <li><a href="/" class="center brand-logo">&nbsp;&nbsp;<img src="https://i.imgur.com/RRI8JXs.png" height="100"></a></li>
                 </ul>
                 <ul class="right">
-                    <li><a href="">Home</a></li>
                     {% if user.is_authenticated %} 
-                      <li><a href="{% url 'search' %}">Search Events</a></li>
-                      <li><a href="{% url 'index' %}">View Saved Events</a></li>
-                      <li><a href="{% url 'logout' %}">Log Out</a></li>
+                      <li><a href="{% url 'search' %}">Search Events</h4></a></li>
+                        <li><a href="{% url 'index' %}">View Saved Events</a></li>
+                        <li><a href="{% url 'logout' %}">Log Out</a></li> 
                     {% else %}
                       <li><a href="{% url 'login' %}">Log In</a></li>
                       <li><a href="{% url 'signup' %}">Sign Up</a></li>
