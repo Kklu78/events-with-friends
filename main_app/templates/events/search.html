@@ -4,7 +4,7 @@
 <h1>Search</h1>
 <div class="row">
     <form action="" method="POST">
-    <div class="col s10">
+    <div class="col s5">
             {% csrf_token %}
             <select id="id_city" name='city' required>
                 {% if city and state %}
@@ -22,9 +22,9 @@
                 <option value="Austin, TX">Austin, TX</option>
             </select>
     </div>
-    <div class="col s10">
+    <div class="col s5">
         <select id="id_segment" name="segment">
-            <option value="-" selected hidden>Select a Type</option>
+            <option value="-" selected hidden>Select an Event Type</option>
             <option value="-">All</option>
             <option value="KZFzniwnSyZfZ7v7nE-Sports">Sports</option>
             <option value="KZFzniwnSyZfZ7v7nJ-Music">Music</option>
@@ -32,7 +32,7 @@
             <option value="KZFzniwnSyZfZ7v7nn-Film">Film</option>
         </select>
     </div>
-    <div class="col s10">
+    <div class="col s2">
         <input type="submit" class="btn" value="search">
     </div>
 </form>

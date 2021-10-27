@@ -27,16 +27,28 @@ body {
   h1 {
       font-family: 'Rock Salt', cursive;
   }
-  h3, h4, h6 {
+  h3, h4 {
       font-family: 'Nothing You Could Do', cursive;
   }
   h5 {
     font-family: 'Nothing You Could Do', cursive;
     font-size: 2.5rem; 
   }
+  #titlepanel{
+      color: #046582;
+      font-weight: 900;
+  }
+  h6 {
+    font-family: 'Nothing You Could Do', cursive;
+    font-size: 1.5rem;
+}
  p {
-     font-size: 1.5rem;
+     font-size: 1.3rem;
      color: black;
+     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+ }
+ #datepanel {
+     color: #6d9886;
  }
   .btn {
       background-color: #444444;
@@ -69,4 +81,7 @@ body {
 }
 #homeee {
     color: white;
+}
+.center-class-brand-logo:hover {
+
 }

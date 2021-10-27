@@ -13,8 +13,8 @@
     <a href="/events/{{ event.id }}/">
     <div class="card-content row">
         <div class="col s6">
-            <h5>{{ event.name }}</h5>
-            <h6 style='color:orange'>{{ event.dates.start.localDate }}</h6>
+            <h5 id="titlepanel">{{ event.name }}</h5>
+            <p id="datepanel">{{ event.dates.start.localDate }}</h6>
             <p>Local Time: {{ event.dates.start.localTime }}</p>
             <p>Timezone: {{event.dates.timezone}}</p>            
             {% with embedded=event|getkey:'_embedded' %}

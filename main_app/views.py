@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 import os
 import requests
 import pprint
+import datetime
 
 
 load_dotenv()
@@ -20,7 +21,7 @@ TM_CONSUMER_SECRET_KEY = os.getenv("TM_CONSUMER_SECRET_KEY")
 def home(request):
     return render(request, 'home.html')
 
-
+@login_required
 def index(request):
 
     profile = UserProfile.objects.filter(user=request.user)
@@ -34,10 +35,12 @@ def index(request):
             req = requests.get(api)
             s_events = req.json()['_embedded']['events'][0]
             s_events['images'] = sorted(s_events['images'], key = lambda x: (int(x['ratio']), int(x['width'])), reverse=True)
+            s_events['dates']['start']['localDate'] = datetime.datetime.strptime(s_events['dates']['start']['localDate'], "%Y-%m-%d").date()
             events_list.append(s_events)
+        events_list = sorted(events_list, key = lambda x: x['dates']['start']['localDate'])
     return render(request, 'events/index.html', {'events': events_list})
 
-
+@login_required
 def details(request, event_id):
     #query api
     api = f'https://app.ticketmaster.com/discovery/v2/events.json?id={event_id}&apikey={TM_CONSUMER_KEY}'
