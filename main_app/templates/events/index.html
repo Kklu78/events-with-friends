@@ -3,9 +3,10 @@
 
 {% block content %}
 
-<h1>Welcome to Events with Friends</h1>
-<h4>Your Events</h4>
+<h1 class='center-align'>Your Events</h1>
 
+
+{% if events %}
 
 {% for event in events %}
 <div class="card">
@@ -31,6 +32,15 @@
 </div>
 
 {% endfor %}
+    
+{% else %}
+
+<h3 class='center-align'>You have no events in your list.</h3>
+<h3 class='center-align'>Please <a href="{% url 'search' %}">search</a> for an event to attend.</h3>
+    
+{% endif %}
+    
+
 
 
 
