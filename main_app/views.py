@@ -36,6 +36,7 @@ def index(request):
             s_events = req.json()['_embedded']['events'][0]
             s_events['images'] = sorted(s_events['images'], key = lambda x: (int(x['ratio']), int(x['width'])), reverse=True)
             s_events['dates']['start']['localDate'] = datetime.datetime.strptime(s_events['dates']['start']['localDate'], "%Y-%m-%d").date()
+            s_events['dates']['start']['localTime'] = datetime.datetime.strptime(s_events['dates']['start']['localTime'], '%H:%M:%S').strftime("%I:%M %p")
             events_list.append(s_events)
         events_list = sorted(events_list, key = lambda x: x['dates']['start']['localDate'])
     return render(request, 'events/index.html', {'events': events_list})
@@ -47,7 +48,8 @@ def details(request, event_id):
     r = requests.get(api)
     event = r.json()['_embedded']['events'][0]
     event['images'] = sorted(event['images'], key = lambda x: (int(x['ratio']), int(x['width'])), reverse=True)
-
+    event['dates']['start']['localDate'] = datetime.datetime.strptime(event['dates']['start']['localDate'], "%Y-%m-%d").date()
+    event['dates']['start']['localTime'] = datetime.datetime.strptime(event['dates']['start']['localTime'], '%H:%M:%S').strftime("%I:%M %p")
     profile = UserProfile.objects.filter(user=request.user)
     userprofile = profile[0].id
     #if in user events
@@ -171,7 +173,7 @@ def add_comment(request, event_id):
         new_comment = form.save(commit=False)
         new_comment.event_id = Event.objects.filter(event_id=event_id)[0].id
         new_comment.user_id = UserProfile.objects.get(user=request.user).id
-        new_comment.created_date = datetime.now()
+        new_comment.created_date = datetime.datetime.now()
         new_comment.save()
     return redirect('details', event_id=event_id)
 

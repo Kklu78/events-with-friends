@@ -12,17 +12,23 @@
 <div class="card">
     <a href="/events/{{ event.id }}/">
     <div class="card-content row">
-        <div class="col s6">
-            <h5 id="titlepanel">{{ event.name }}</h5>
-            <p id="datepanel">{{ event.dates.start.localDate }}</h6>
-            <p>Local Time: {{ event.dates.start.localTime }}</p>
+        <h5 id="titlepanel">{{ event.name }}</h5>
+        <div class="col s3">            
+            <p id="datepanel">{{ event.dates.start.localDate }} {{ event.dates.start.localTime }}</p>
             <p>Timezone: {{event.dates.timezone}}</p>            
-            {% with embedded=event|getkey:'_embedded' %}
-            <p>Location: {{embedded.venues.0.name}}</p>                
-            {% endwith %}
+            {% if event.promoter.name %}
             <p> Brought to you by: {{ event.promoter.name }}</p>
+            {% endif %}                
+        </div>
+        <div class="col s3">
+            <br>
+            {% with embedded=event|getkey:'_embedded' %}
+            <p> Address:</p>
+            <p> {{embedded.venues.0.name}}</p>
+            <p> {{embedded.venues.0.address.line1}}</p>
+            <p> {{embedded.venues.0.city.name}}, {{embedded.venues.0.state.stateCode}} {{embedded.venues.0.postalCode}}</p>
 
-                
+            {% endwith %}      
         </div>
         <div class="col s6">
             <img src="{{ event.images.0.url }}" height='200' width='auto' align='right'>
