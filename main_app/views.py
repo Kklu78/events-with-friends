@@ -113,11 +113,12 @@ def remove_event(request, event_id):
 
 def search(request):
     if bool(request.POST) == True:
+        print(request.POST, 'this is request')
         # Change the city variable to the variable the user posted
         city = request.POST.get('city').split(', ')[0]
         state = request.POST.get('city').split(', ')[1]
-        eventtype = 'Film'
-        segmentId = 'KZFzniwnSyZfZ7v7nn'
+        segmentId = request.POST.get('segment').split('-')[0]
+        eventtype = request.POST.get('segment').split('-')[1]
         size = 18
     # have api url replace keys with correct locations
         api_url = f'https://app.ticketmaster.com/discovery/v2/events.json?size={size}&city={city}&stateCode={state}&segmentId={segmentId}&apikey={TM_CONSUMER_KEY}'
@@ -131,10 +132,10 @@ def search(request):
                 y['images'] = sorted(y['images'], key = lambda x: (int(x['ratio']), int(x['width'])), reverse=True)
                 res_events.append(y)
         # redirect user to a page listing events in that search parameter
-            return render(request, 'events/search.html', {'events': res_events, 'url': api_url, 'city': city})
+            return render(request, 'events/search.html', {'events': res_events, 'url': api_url, 'city': city, 'state':state,'type':eventtype})
         else:
-            return render(request, 'events/search.html', {'events': None, 'url': api_url, 'city': f'Search for {eventtype} in {city} returned no results.'})
-
+            return render(request, 'events/search.html', {'events': None, 'url': api_url, 'city': f'Search returned no results.'})
+    # if no city or state is passed - default loading page
     else:
         return render(request, 'events/search.html', {'events': None})
 
