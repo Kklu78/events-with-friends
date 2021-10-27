@@ -3,10 +3,15 @@
 {% block content %}
 <h1>Search</h1>
 <div class="row">
+    <form action="" method="POST">
     <div class="col s10">
-        <form action="" method="POST">
             {% csrf_token %}
-            <select id="id_city" name='city'>
+            <select id="id_city" name='city' required>
+                {% if city and state %}
+                <option value="{{ city }}, {{ state }}" hidden>{{ city }}, {{ state }}</option>
+                {% else %}
+                <option value=" , " selected hidden>Select a City</option>    
+                {% endif %}
                 <option value="Los Angeles, CA">Los Angeles, CA</option>
                 <option value="San Francisco, CA">San Francisco, CA</option>
                 <option value="Seattle, WA">Seattle, WA</option>
@@ -17,13 +22,23 @@
                 <option value="Austin, TX">Austin, TX</option>
             </select>
     </div>
-    <div class="col s2">
-        <input type="submit" class="btn" value="search">
-        </form>
+    <div class="col s10">
+        <select id="id_segment" name="segment">
+            <option value="-" selected hidden>Select a Type</option>
+            <option value="-">All</option>
+            <option value="KZFzniwnSyZfZ7v7nE-Sports">Sports</option>
+            <option value="KZFzniwnSyZfZ7v7nJ-Music">Music</option>
+            <option value="KZFzniwnSyZfZ7v7na-Arts & Theatre">Arts & Theatre</option>
+            <option value="KZFzniwnSyZfZ7v7nn-Film">Film</option>
+        </select>
     </div>
+    <div class="col s10">
+        <input type="submit" class="btn" value="search">
+    </div>
+</form>
 </div>
 {% if events %}
-<h4>Upcoming Events in {{ city }}:</h4>
+<h4>Upcoming {{ type }} Events in {{ city }}:</h4>
 <div class="search-container">
 {% for event in events %}
 <div class="row">
@@ -53,6 +68,10 @@
 <!--JS to init dropdown for search-->
 <script>
       var selectEl = document.getElementById('id_city');
-  M.FormSelect.init(selectEl);
+      var secondEl = document.getElementById('id_segment')
+    
+  M.FormSelect.init(selectEl)
+  M.FormSelect.init(secondEl);
+  
 </script>
 {% endblock %}
