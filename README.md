@@ -2,15 +2,16 @@
 This site allows for the easy planning of events with friends. Tired of having a difficult time planning events with friends, well this is the site for you. This site allows the user to pick events and put in on there personal list which can be shared with friends.
 
 ## Screenshots
+#### Home Page
 ![HomePage](https://i.imgur.com/BpM19DN.png)
 
+#### Search Page
+![Search Page](https://i.imgur.com/t2PZi5X.png)
 
-![Search Page](https://i.imgur.com/dciz1j6.png)
-
-
+#### Details Page
 ![Details Page](https://i.imgur.com/t240TPm.png)
 
-
+#### Saved Events Page
 ![Your Saved Events Page](https://i.imgur.com/CiEkBW4.png)
 
 #### Technologies Used
