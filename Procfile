@@ -1,0 +1,1 @@
+web: gunicorn events_with_friends.wsgi
