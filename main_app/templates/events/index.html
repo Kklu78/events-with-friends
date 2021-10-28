@@ -15,7 +15,9 @@
         <h5 id="titlepanel">{{ event.name }}</h5>
         <div class="col s3">            
             <p id="datepanel">{{ event.dates.start.localDate }} {{ event.dates.start.localTime }}</p>
-            <p>Timezone: {{event.dates.timezone}}</p>            
+            {% if event.dates.timezone %}
+            <p>Timezone: {{event.dates.timezone}}</p>
+            {% endif %}                
             {% if event.promoter.name %}
             <p> Brought to you by: {{ event.promoter.name }}</p>
             {% endif %}                
