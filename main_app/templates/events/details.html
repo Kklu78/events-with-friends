@@ -87,25 +87,24 @@
         </div>
     </div>
 
-    {% if event.accessibility.ticketLimit %}
+    {% if event.ticketing.healthCheck.summary or event.ticketing.healthCheck.description %}
     <div class="col s12">
         
         <div class="card">
             <div class="card-content">
-                
+                {% if event.accessibility.ticketLimit %}
                 <h5>Ticket Limit</h5>
                 <p>Ticket Limit: {{ event.accessibility.ticketLimit }}</p>
                 {% endif %}
-                {% if event.ticketing.healthCheck.summary or event.ticketing.healthCheck.description %}
                 <h5>Summary and Description of Event</h5>
                 <p> Summary: {{ event.ticketing.healthCheck.summary }}</p>
                 <p> Description: {{ event.ticketing.healthCheck.description }}</p>
-                {% endif %}
+
 
             </div>
         </div>
     </div>
-
+    {% endif %}
 
     {% with embedded=event|getkey:'_embedded' %}
     {% if embedded.venues.0.boxOfficeInfo.openHoursDetail or embedded.venues.0.boxOfficeInfo.willCallDetail %}
@@ -158,10 +157,10 @@
 
 
 
-<hr />
+<hr/>
 <br>
 <div class="col s12">
-    <label>Comments:</label>
+    
 
       {% if in_user_events %}
 
@@ -173,7 +172,7 @@
     {% else %}
         <h5>Please Add Event To Your List To Comment</h5>
     {% endif %}
-
+    <h5>Comments:</h5>
 </div>
 <div class="row">
         {% for comment in comments %}

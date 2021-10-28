@@ -36,7 +36,10 @@ def index(request):
             s_events = req.json()['_embedded']['events'][0]
             s_events['images'] = sorted(s_events['images'], key = lambda x: (int(x['ratio']), int(x['width'])), reverse=True)
             s_events['dates']['start']['localDate'] = datetime.datetime.strptime(s_events['dates']['start']['localDate'], "%Y-%m-%d").date()
-            s_events['dates']['start']['localTime'] = datetime.datetime.strptime(s_events['dates']['start']['localTime'], '%H:%M:%S').strftime("%I:%M %p")
+            if s_events['dates']['start'].get('localTime', None):
+                s_events['dates']['start']['localTime'] = datetime.datetime.strptime(s_events['dates']['start']['localTime'], '%H:%M:%S').strftime("%I:%M %p")
+            else:
+                s_events['dates']['start']['localTime'] = 'TBD'
             events_list.append(s_events)
         events_list = sorted(events_list, key = lambda x: x['dates']['start']['localDate'])
     return render(request, 'events/index.html', {'events': events_list})
@@ -48,8 +51,12 @@ def details(request, event_id):
     r = requests.get(api)
     event = r.json()['_embedded']['events'][0]
     event['images'] = sorted(event['images'], key = lambda x: (int(x['ratio']), int(x['width'])), reverse=True)
-    event['dates']['start']['localDate'] = datetime.datetime.strptime(event['dates']['start']['localDate'], "%Y-%m-%d").date()
-    event['dates']['start']['localTime'] = datetime.datetime.strptime(event['dates']['start']['localTime'], '%H:%M:%S').strftime("%I:%M %p")
+    if event['dates']['start']['localDate']:
+        event['dates']['start']['localDate'] = datetime.datetime.strptime(event['dates']['start']['localDate'], "%Y-%m-%d").date()
+    if event['dates']['start'].get('localTime', None):
+        event['dates']['start']['localTime'] = datetime.datetime.strptime(event['dates']['start']['localTime'], '%H:%M:%S').strftime("%I:%M %p")
+    else:
+        event['dates']['start']['localTime'] = 'TBD'
     profile = UserProfile.objects.filter(user=request.user)
     userprofile = profile[0].id
     #if in user events

@@ -82,6 +82,11 @@ body {
 #homeee {
     color: white;
 }
-.center-class-brand-logo:hover {
+label[for="id_content"] {
+    display: none;
+    position: relative;
+}
 
+#id_content {
+    background-color: red;
 }
