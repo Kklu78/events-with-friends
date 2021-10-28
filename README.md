@@ -26,7 +26,7 @@ This site allows for the easy planning of events with friends. Tired of having a
 
 #### Getting Started
 
-[Events With Friends]()
+[Events With Friends](https://events-with-friends.herokuapp.com/)
 
 
 #### Wireframe
