@@ -88,5 +88,6 @@ label[for="id_content"] {
 }
 
 #id_content {
-    background-color: white;
+    background-color: whitesmoke;
+    height: 10vh;
 }

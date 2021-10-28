@@ -159,10 +159,12 @@
 
 <hr/>
 <br>
-<div class="col s12">
+{% if in_user_events %}
+<div class="col s2">
+        <p> <i class="material-icons prefix">mode_edit</i> Enter Comment Below</p>
+</div>
+<div class="col s10">
     
-
-      {% if in_user_events %}
 
     <form action="{% url 'add_comment' event.id %}" method="post">
         {% csrf_token %}

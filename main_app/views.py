@@ -180,7 +180,7 @@ def add_comment(request, event_id):
         new_comment = form.save(commit=False)
         new_comment.event_id = Event.objects.filter(event_id=event_id)[0].id
         new_comment.user_id = UserProfile.objects.get(user=request.user).id
-        new_comment.created_date = datetime.datetime.now()
+        new_comment.created_date = datetime.datetime.now() - datetime.timedelta(hours=7)
         new_comment.save()
     return redirect('details', event_id=event_id)
 
