@@ -107,29 +107,38 @@
     </div>
 
 
+    {% with embedded=event|getkey:'_embedded' %}
+    {% if embedded.venues.0.boxOfficeInfo.openHoursDetail or embedded.venues.0.boxOfficeInfo.willCallDetail %}
     <div class="col s12">
         <div class="card">
             <div class="card-content">
-                {% with embedded=event|getkey:'_embedded' %}
                 <h5>Box Office Info</h5>
                 <p>Open Hours: {{ embedded.venues.0.boxOfficeInfo.openHoursDetail }}</p> 
                 <p>Will Call Details: {{ embedded.venues.0.boxOfficeInfo.willCallDetail }}</p>              
-                {% endwith %}
             </div>
         </div>
-    </div>
+    </div>   
+    {% endif %}  
+    {% endwith %}
 
-    <div class="col s12">
+
+    {% with embedded=event|getkey:'_embedded' %}
+    {% if embedded.venues.0.parkingDetail %}
+    <div class="col s12"> 
         <div class="card">
-            <div class="card-content">
-                {% with embedded=event|getkey:'_embedded' %}
+            <div class="card-content">    
                 <h5>Parking Details</h5>
-                <p>{{ embedded.venues.0.parkingDetail }}</p>              
-                {% endwith %}
+                <p>{{ embedded.venues.0.parkingDetail }}</p>   
             </div>
         </div>
     </div>
+    {% endif %}
+    {% endwith %} 
+    
 
+
+    {% with embedded=event|getkey:'_embedded' %}
+    {% if embedded.venues.0.generalInfo.generalRule or embedded.venues.0.generalInfo.childRule %}
     <div class="col s12">
         <div class="card">
             <div class="card-content">
@@ -143,7 +152,9 @@
             </div>
         </div>
     </div>
-</div>
+</div>   
+{% endif %}    
+{% endwith %}
 
 
 
